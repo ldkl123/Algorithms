@@ -63,13 +63,12 @@ public class Poly_C {
 
         public Poly_C add(Poly_C other) {
 		int total_len = get_len(this, other);
-		System.out.println(total_len);
 		int[] len = {init_len(this), init_len(other)};
 		int i=0, j=0, k=0;
 		Poly_C temp_poly = new Poly_C(total_len);
 		
 		temp_poly.init_poly(temp_poly, temp_poly.terms.length);
-		System.out.println(len[1]);
+
 		while(i<len[0] && j<len[1]){
 			if(this.terms[i].exp == other.terms[j].exp){
 				temp_poly.terms[k].coef = this.terms[i].coef + other.terms[j].coef;
@@ -135,21 +134,15 @@ public class Poly_C {
 			temp_exp[i+len[0]] = poly2.terms[i].exp;
 		}
 
-		System.out.println(Arrays.toString(temp_exp));
-		System.out.println(copy_len);
 		for(int i=0; i<total_len; i++){
-			System.out.println("################");
 			for(int j=i+1; j<total_len; j++){
 				if(temp_exp[i] == temp_exp[j] && temp_exp[j]!=-1){
 					copy_len--;
-					System.out.println(copy_len);
 					temp_exp[j] = -1;
 				}
 			}
 
 		}
-		System.out.println(copy_len);
-		System.out.println(Arrays.toString(temp_exp));
 		return copy_len;
 					
 	}
@@ -169,7 +162,21 @@ public class Poly_C {
 		}
 		return len_count;
 	}
-				
+	/*			
+        public void addTerm(int coef, int exponent) {
+        	
+		int enable_index_num = this.terms.length;
+		if (exponent > enable_index_num){
+			System.out.println("Over exponent!");
+		}
+		else{
+			this.terms[enable_index_num - (exponent+1)].coef = coef;
+			this.terms[enable_index_num - (exponent+1)].exp = exponent;
+		}
+		this.next++;
+		
+        }
+	*/
 	public void addTerm(int coef, int exponent) {
 		int enable_index_num = this.terms.length;
 		
@@ -214,8 +221,6 @@ public class Poly_C {
 	}
 	System.arraycopy(temp_exp, 0, temp_count, 0, temp_exp.length);
 	k=0;
-	System.out.println(Arrays.toString(temp_exp));
-	System.out.println(Arrays.toString(temp_coef));
 	for(int i=0; i<max_len; i++){
 		for(int j=i+1; j<max_len; j++){
 			if(temp_exp[i] == temp_exp[j]){	
@@ -238,7 +243,6 @@ public class Poly_C {
 	Poly_C temp_poly = new Poly_C(exp_count);
 
 	temp_poly.init_poly(temp_poly, temp_poly.terms.length);
-	System.out.println(exp_count);
 	exp_count=0;
 	for(int i=0; i<max_len; i++){
 		temp_sum = temp_coef[i];
@@ -266,11 +270,57 @@ public class Poly_C {
 	return temp_poly;
 		
     }
+        /*
+        public Poly_C mult(Poly_C other) {
+        
+		int Other_Poly_len = other.terms.length;
+		int long_poly=0;
+		int short_len =0;
+	
+		Poly[] Choice_Poly = {this, other};
+		//System.out.println(Choice_Poly[0].terms[0].coef);
+		int sub_len = Math.abs(this.terms.length - other.terms.length);
+		
+		if (this.terms.length >= Other_Poly_len){ 		
+			long_poly = 0;
+				//System.out.println(Choice_Poly[0].terms[0].coef);
+		}
+		else{
+			long_poly = 1;
+		}
+	
+		int long_len = Choice_Poly[long_poly].terms.length;
+
+		Poly temp_Poly = new Poly(long_len); //더해서 저장할 임시 다항식
+		for(int i=0; i < long_len; i++){
+			temp_Poly.terms[i] = new Term(0,long_len-(i+1));
+		}	
+
+		if(Other_Poly_len == this.terms.length){
+			//System.out.println(Choice_Poly[0].terms[0].coef);
+			for(int i=0; i < long_len; i++){
+			temp_Poly.terms[i].coef = Choice_Poly[0].terms[i].coef + Choice_Poly[1].terms[i].coef;
+				//System.out.println(Choice_Poly[0].terms[i].coef);
+			}
+			
+			return temp_Poly;		
+		}
+		else{
+			for(int i=0; i< sub_len; i++){
+				temp_Poly.terms[i].coef = Choice_Poly[long_poly].terms[i].coef;
+			}
+			for(int j=sub_len; j<long_len; j++){
+				temp_Poly.terms[j].coef = Choice_Poly[0].terms[j].coef + Choice_Poly[1].terms[j].coef;	
+			}	
+			return temp_Poly;
+		}
+	}*/
 
     public String toString() {
         Arrays.sort(terms, 0, next, (a, b) -> b.exp - a.exp);
         return Arrays.stream(terms)
                      .filter(i -> i != null)
+                     .filter(i -> i.coef != 0)
                      .map(i -> i.toString())
                      .collect(Collectors.joining(" + "));
     }
@@ -286,8 +336,8 @@ public class Poly_C {
 	        poly1.addTerm(1, 0);
 
 	        Poly_C poly2 = new Poly_C(4);
-      		poly2.addTerm(1, 1);
-        	poly2.addTerm(1, 2);
+      		//poly2.addTerm(1, 1);
+        	//poly2.addTerm(1, 2);
         	poly2.addTerm(1, 3);
         	poly2.addTerm(1, 0);
 
